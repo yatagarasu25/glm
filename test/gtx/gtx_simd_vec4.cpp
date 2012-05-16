@@ -7,6 +7,7 @@
 // File    : test/gtx/simd-vec4.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+//#define GLM_SIMD_NO_TYPE_UNION
 #include <glm/glm.hpp>
 #include <glm/gtx/simd_vec4.hpp>
 #include <cstdio>
@@ -19,6 +20,7 @@ void test_sizeof()
     printf("sizeof(glm::simdVec4) == 16 : %s\n", result ? "yes" : "no");
 }
 
+#ifndef GLM_SIMD_NO_TYPE_UNION
 void test_data_equals_xyzw()
 {
     glm::simdVec4 subject(1.0f, 2.0f, 3.0f, 4.0f);
@@ -30,6 +32,7 @@ void test_data_equals_xyzw()
 
     printf("Data == xyzw : %s\n", result ? "yes" : "no");
 }
+#endif
 
 void test_accessors()
 {
@@ -57,10 +60,10 @@ void test_add()
     glm::simdVec4 answer = subjectA + subjectB;
 
     bool result =
-        answer.x == 2.0f &&
-        answer.y == 4.0f &&
-        answer.z == 6.0f &&
-        answer.w == 8.0f;
+        answer[0] == 2.0f &&
+        answer[1] == 4.0f &&
+        answer[2] == 6.0f &&
+        answer[3] == 8.0f;
 
     printf("{1.0, 2.0, 3.0, 4.0,} + {1.0, 2.0, 3.0, 4.0} == {2.0, 4.0, 6.0, 8.0} : %s\n", result ? "yes" : "no");
 }
@@ -72,10 +75,10 @@ void test_sub()
     glm::simdVec4 answer = subjectA - subjectB;
 
     bool result =
-        answer.x == 0.0f &&
-        answer.y == 0.0f &&
-        answer.z == 0.0f &&
-        answer.w == 0.0f;
+        answer[0] == 0.0f &&
+        answer[1] == 0.0f &&
+        answer[2] == 0.0f &&
+        answer[3] == 0.0f;
 
     printf("{1.0, 2.0, 3.0, 4.0,} - {1.0, 2.0, 3.0, 4.0} == {0.0, 0.0, 0.0, 0.0} : %s\n", result ? "yes" : "no");
 }
@@ -87,10 +90,10 @@ void test_mul()
     glm::simdVec4 answer = subjectA * subjectB;
 
     bool result =
-        answer.x == 1.0f &&
-        answer.y == 4.0f &&
-        answer.z == 9.0f &&
-        answer.w == 16.0f;
+        answer[0] == 1.0f &&
+        answer[1] == 4.0f &&
+        answer[2] == 9.0f &&
+        answer[3] == 16.0f;
 
     printf("{1.0, 2.0, 3.0, 4.0,} * {1.0, 2.0, 3.0, 4.0} == {1.0, 4.0, 9.0, 16.0} : %s\n", result ? "yes" : "no");
 }
@@ -102,10 +105,10 @@ void test_div()
     glm::simdVec4 answer = subjectA / subjectB;
 
     bool result =
-        answer.x == 1.0f &&
-        answer.y == 1.0f &&
-        answer.z == 1.0f &&
-        answer.w == 1.0f;
+        answer[0] == 1.0f &&
+        answer[1] == 1.0f &&
+        answer[2] == 1.0f &&
+        answer[3] == 1.0f;
 
     printf("{1.0, 2.0, 3.0, 4.0,} / {1.0, 2.0, 3.0, 4.0} == {1.0, 1.0, 1.0, 1.0} : %s\n", result ? "yes" : "no");
 }
@@ -119,8 +122,11 @@ void do_all_tests()
 {
     printf("--- Basic Tests ---\n");
     test_sizeof();
-    test_data_equals_xyzw();
     test_accessors();
+
+#ifndef GLM_SIMD_NO_TYPE_UNION
+    test_data_equals_xyzw();
+#endif
     
     printf("\n");
 
