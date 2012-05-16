@@ -231,8 +231,18 @@ int test_compute_gtx()
 	return 0;
 }
 
+
+// Forward declarations so we can move the content out of the way of the previous work.
+void do_consistency_checks();
+
+
 int main()
 {
+    // Consistency checks.
+    do_consistency_checks();
+
+
+
 	int Error = 0;
 
 	std::vector<glm::mat4> Data(64 * 64 * 1);
@@ -289,8 +299,176 @@ int main()
 	
 	glm::simdMat4 D = glm::matrixCompMult(glm::simdMat4(1.0), glm::simdMat4(1.0));
 
+
 	return Error;
 }
+
+
+
+#include <glm/gtx/string_cast.hpp>
+
+// Consistency Checks.
+//
+// These checks are going in with the assumption that glm::mat4 operations are working correctly. All they do is perform identical operations between pure and simd
+// matrices and compares them.
+void do_consistency_checks()
+{
+    printf("--- Consistency Checks ---\n");
+
+    glm::mat4 pure1;
+    glm::mat4 pure2
+    (
+        1.0f,  0.0f,  0.0f,  4.0f,
+        0.0f,  6.0f,  0.0f,  8.0f,
+        0.0f,  0.0f,  11.0f, 12.0f,
+        13.0f, 14.0f, 15.0f, 1.0f
+    );
+    glm::vec4 pureVec4;
+
+    glm::simdMat4 simd1;
+    glm::simdMat4 simd2
+    (
+        1.0f,  0.0f,  0.0f,  4.0f,
+        0.0f,  6.0f,  0.0f,  8.0f,
+        0.0f,  0.0f,  11.0f, 12.0f,
+        13.0f, 14.0f, 15.0f, 1.0f
+    );
+    glm::simdVec4 simdVec4;
+
+
+    printf("    Identity : %s\n", (
+        glm::mat4_cast(simd1) == pure1
+    ) ? "yes" : "no");
+
+
+
+    // operator+
+    printf("    m + s : %s\n", (
+        glm::mat4_cast(simd2 + 3.14159f)  ==
+        (pure2 + 3.14159f)
+    ) ? "yes" : "no");
+
+    printf("    s + m : %s\n", (
+        glm::mat4_cast(3.14159f + simd2)  ==
+        (3.14159f + pure2)
+    ) ? "yes" : "no");
+
+    printf("    m + m : %s\n", (
+        glm::mat4_cast(simd2 + simd2)  ==
+        (pure2 + pure2)
+    ) ? "yes" : "no");
+
+    // operator-
+    printf("    m - s : %s\n", (
+        glm::mat4_cast(simd2 - 3.14159f)  ==
+        (pure2 - 3.14159f)
+    ) ? "yes" : "no");
+
+    printf("    s - m : %s\n", (
+        glm::mat4_cast(3.14159f - simd2)  ==
+        (3.14159f - pure2)
+    ) ? "yes" : "no");
+
+    printf("    m - m : %s\n", (
+        glm::mat4_cast(simd2 - simd2)  ==
+        (pure2 - pure2)
+    ) ? "yes" : "no");
+
+
+    // operator*
+    printf("    m * s : %s\n", (
+        glm::mat4_cast(simd2 * 3.14159f)  ==
+        (pure2 * 3.14159f)
+    ) ? "yes" : "no");
+
+    printf("    s * m : %s\n", (
+        glm::mat4_cast(3.14159f * simd2)  ==
+        (3.14159f * pure2)
+    ) ? "yes" : "no");
+
+    printf("    v * m : %s\n", (
+        glm::vec4_cast(simdVec4 * simd2)  ==
+        pureVec4 * pure2
+    ) ? "yes" : "no");
+
+    printf("    m * v : %s\n", (
+        glm::vec4_cast(simd2 * simdVec4)  ==
+        pure2 * pureVec4
+    ) ? "yes" : "no");
+
+    printf("    m * m : %s\n", (
+        glm::mat4_cast(simd2 * simd2)  ==
+        (pure2 * pure2)
+    ) ? "yes" : "no");
+
+
+    // operator/
+    printf("    m / s : %s\n", (
+        glm::mat4_cast(simd2 / 3.14159f)  ==
+        (pure2 / 3.14159f)
+    ) ? "yes" : "no");
+
+    printf("    s / m : %s\n", (
+        glm::mat4_cast(3.14159f / simd2)  ==
+        (3.14159f / pure2)
+    ) ? "yes" : "no");
+
+    // v / m is not implemented by mat4.
+    /*
+    printf("    v / m : %s\n", (
+        glm::vec4_cast(simdVec4 / simd2)  ==
+        pureVec4 / pure2
+    ) ? "yes" : "no");
+    */
+
+    printf("    m / v : %s\n", (
+        glm::vec4_cast(simd2 / simdVec4)  ==
+        pure2 / pureVec4
+    ) ? "yes" : "no");
+
+    printf("    m / m : %s\n", (
+        glm::mat4_cast(simd2 / simd2)  ==
+        (pure2 / pure2)
+    ) ? "yes" : "no");
+
+
+    // transpose
+    printf("    transpose : %s\n", (
+        glm::mat4_cast(glm::transpose(simd2))  ==
+        glm::transpose(pure2)
+    ) ? "yes" : "no");
+
+    // transpose
+    printf("    determinant : %s\n", (
+        glm::determinant(simd2)  ==
+        glm::determinant(pure2)
+    ) ? "yes" : "no");
+
+    // inverse
+    printf("    inverse : %s\n", (
+        glm::mat4_cast(glm::inverse(simd2))  ==
+        glm::inverse(pure2)
+    ) ? "yes" : "no");
+
+    // matrixCompMult
+    printf("    matrixCompMult : %s\n", (
+        glm::mat4_cast(glm::matrixCompMult(simd2, simd2))  ==
+        glm::matrixCompMult(pure2, pure2)
+    ) ? "yes" : "no");
+
+    // outerProduct
+    printf("    outerProduct : %s\n", (
+        glm::mat4_cast(glm::outerProduct(simdVec4, simdVec4))  ==
+        glm::outerProduct(pureVec4, pureVec4)
+    ) ? "yes" : "no");
+
+
+
+    printf("\n");
+}
+
+
+
 
 #else
 

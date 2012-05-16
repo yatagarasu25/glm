@@ -44,9 +44,9 @@ namespace detail
 
 	void sse_sub_ps(__m128 in1[4], __m128 in2[4], __m128 out[4]);
 
-	__m128 sse_mul_ps(__m128 m[4], __m128 v);
+	__m128 sse_mul_ps(__m128 const m[4], __m128 v);
 
-	__m128 sse_mul_ps(__m128 v, __m128 m[4]);
+	__m128 sse_mul_ps(__m128 v, __m128 const m[4]);
 
 	void sse_mul_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
 
