@@ -156,6 +156,21 @@ GLM_FUNC_QUALIFIER fvec4SIMD& fvec4SIMD::operator--()
 }
 
 //////////////////////////////////////
+// Accesses
+
+GLM_FUNC_QUALIFIER float & fvec4SIMD::operator[](size_type i)
+{
+    assert(i < 4);
+    return this->Data.m128_f32[i];
+}
+
+GLM_FUNC_QUALIFIER float const & fvec4SIMD::operator[](size_type i) const
+{
+    assert(i < 4);
+    return this->Data.m128_f32[i];
+}
+
+//////////////////////////////////////
 // Swizzle operators
 
 template <comp X, comp Y, comp Z, comp W>
