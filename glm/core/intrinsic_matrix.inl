@@ -46,7 +46,7 @@ GLM_FUNC_QUALIFIER matType sse_comp_mul_ps
 	out[3] = _mm_mul_ps(in1[3], in2[3]);
 }
 
-GLM_FUNC_QUALIFIER void sse_add_ps(__m128 in1[4], __m128 in2[4], __m128 out[4])
+GLM_FUNC_QUALIFIER void sse_add_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4])
 {
 	{
 		out[0] = _mm_add_ps(in1[0], in2[0]);
@@ -56,7 +56,7 @@ GLM_FUNC_QUALIFIER void sse_add_ps(__m128 in1[4], __m128 in2[4], __m128 out[4])
 	}
 }
 
-GLM_FUNC_QUALIFIER void sse_sub_ps(__m128 in1[4], __m128 in2[4], __m128 out[4])
+GLM_FUNC_QUALIFIER void sse_sub_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4])
 {
 	{
 		out[0] = _mm_sub_ps(in1[0], in2[0]);
