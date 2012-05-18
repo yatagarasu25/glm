@@ -467,17 +467,20 @@
 /////////////////
 // Platform 
 
-// User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_AVX
+// User defines: GLM_FORCE_PURE GLM_FORCE_SSE4 GLM_FORCE_SSE3 GLM_FORCE_SSE2 GLM_FORCE_AVX
 
 #define GLM_ARCH_PURE		0x0000 //(0x0000)
 #define GLM_ARCH_SSE2		0x0001 //(0x0001)
 #define GLM_ARCH_SSE3		0x0003 //(0x0002 | GLM_ARCH_SSE2)
-#define GLM_ARCH_AVX		0x0007 //(0x0004 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#define GLM_ARCH_SSE4       0x0007 //(0x0004 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#define GLM_ARCH_AVX		0x0015 //(0x0008 | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
 
 #if(defined(GLM_FORCE_PURE))
 #	define GLM_ARCH GLM_ARCH_PURE
 #elif(defined(GLM_FORCE_AVX))
 #	define GLM_ARCH GLM_ARCH_AVX
+#elif(defined(GLM_FORCE_SSE4))
+#   define GLM_ARCH GLM_ARCH_SSE4
 #elif(defined(GLM_FORCE_SSE3))
 #	define GLM_ARCH GLM_ARCH_SSE3
 #elif(defined(GLM_FORCE_SSE2))
@@ -489,10 +492,10 @@
 #		if(_MSC_FULL_VER >= 160031118) //160031118: VC2010 SP1 beta full version
 #			define GLM_ARCH GLM_ARCH_AVX //GLM_ARCH_AVX (Require SP1)
 #		else
-#			define GLM_ARCH GLM_ARCH_SSE3
+#			define GLM_ARCH GLM_ARCH_SSE4
 #		endif
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2008) 
-#		define GLM_ARCH GLM_ARCH_SSE3
+#		define GLM_ARCH GLM_ARCH_SSE4
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2005)
 #		define GLM_ARCH GLM_ARCH_SSE2
 #	else
@@ -501,6 +504,8 @@
 #elif(GLM_COMPILER & GLM_COMPILER_LLVM_GCC)
 #	if(defined(__AVX__))
 #		define GLM_ARCH GLM_ARCH_AVX
+#   elif(defined(__SSE4__))
+#       define GLM_ARCH GLM_ARCH_SSE4
 #	elif(defined(__SSE3__))
 #		define GLM_ARCH GLM_ARCH_SSE3
 #	elif(defined(__SSE2__))
@@ -511,6 +516,8 @@
 #elif((GLM_COMPILER & GLM_COMPILER_GCC) && (defined(__i386__) || defined(__x86_64__)))
 #	if(defined(__AVX__))
 #		define GLM_ARCH GLM_ARCH_AVX
+#   elif(defined(__SSE4__))
+#       define GLM_ARCH GLM_ARCH_SSE4
 #	elif(defined(__SSE3__))
 #		define GLM_ARCH GLM_ARCH_SSE3
 #	elif(defined(__SSE2__))
@@ -522,16 +529,18 @@
 #	define GLM_ARCH GLM_ARCH_PURE
 #endif
 
+// Each intrinsic header will include headers for lower level intrinsics. For example, immintrin.h (AVX)
+// will include smmintrin.h (SSE4.2).
 #if(GLM_ARCH != GLM_ARCH_PURE)
-#if((GLM_ARCH & GLM_ARCH_AVX) == GLM_ARCH_AVX)
-#	include <immintrin.h>
-#endif//GLM_ARCH
-#if((GLM_ARCH & GLM_ARCH_SSE3) == GLM_ARCH_SSE3)
-#	include <pmmintrin.h>
-#endif//GLM_ARCH
-#if((GLM_ARCH & GLM_ARCH_SSE2) == GLM_ARCH_SSE2)
-#	include <emmintrin.h>
-#endif//GLM_ARCH
+#   if(  GLM_ARCH == GLM_ARCH_AVX )
+#	    include <immintrin.h>
+#   elif(GLM_ARCH == GLM_ARCH_SSE4)
+#       include <smmintrin.h>
+#   elif(GLM_ARCH == GLM_ARCH_SSE3)
+#	    include <pmmintrin.h>
+#   elif(GLM_ARCH == GLM_ARCH_SSE2)
+#	    include <emmintrin.h>
+#   endif//GLM_ARCH
 #endif//(GLM_ARCH != GLM_ARCH_PURE)
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_MESSAGE_ARCH_DISPLAYED))
@@ -542,6 +551,8 @@
 #		pragma message("GLM: SSE2 instruction set")
 #	elif(GLM_ARCH == GLM_ARCH_SSE3)
 #		pragma message("GLM: SSE3 instruction set")
+#   elif(GLM_ARCH == GLM_ARCH_SSE4)
+&       pragma message("GLM: SSE4 instruction set")
 #	elif(GLM_ARCH == GLM_ARCH_AVX)
 #		pragma message("GLM: AVX instruction set")
 #	endif//GLM_ARCH

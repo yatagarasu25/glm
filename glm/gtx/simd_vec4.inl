@@ -632,9 +632,15 @@ GLM_FUNC_QUALIFIER float dot
 	detail::fvec4SIMD const & y
 )
 {
-	float Result = 0;
+    float Result;
+
+#if GLM_ARCH >= GLM_ARCH_SSE4
+    _mm_store_ss(&Result, _mm_dp_ps(x.Data, y.Data, 0xf1));
+#else
 	_mm_store_ss(&Result, detail::sse_dot_ss(x.Data, y.Data));
-	return Result;
+#endif
+
+    return Result;
 }
 
 GLM_FUNC_QUALIFIER detail::fvec4SIMD dot4

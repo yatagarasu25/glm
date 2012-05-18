@@ -8,9 +8,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 //#define GLM_SIMD_NO_TYPE_UNION
+//#define GLM_FORCE_SSE4
 #include <glm/glm.hpp>
 #include <glm/gtx/simd_vec4.hpp>
 #include <cstdio>
+#include <ctime>
+#include <vector>
 
 #if(GLM_ARCH != GLM_ARCH_PURE)
 
@@ -116,9 +119,7 @@ void test_div()
 
 
 
-
-
-void do_all_tests()
+void do_correctness_checks()
 {
     printf("--- Basic Tests ---\n");
     test_sizeof();
@@ -135,7 +136,40 @@ void do_all_tests()
     test_sub();
     test_mul();
     test_div();
+
+    printf("\n");
 }
+
+void do_consistency_checks()
+{
+    glm::vec4     pure(1.0f, 2.0f, 3.0f, 4.0f);
+    glm::simdVec4 simd(1.0f, 2.0f, 3.0f, 4.0f);
+
+    printf("--- Consistency Checks ---\n");
+
+
+    printf("    dot : %s\n",
+    (
+        glm::dot(simd, simd) == glm::dot(pure, pure)
+
+    ) ? "yes" : "no");
+
+    printf("\n");
+}
+
+void do_timing_checks()
+{
+}
+
+void do_all_tests()
+{
+    do_correctness_checks();
+    do_consistency_checks();
+    do_timing_checks();
+}
+
+
+
 
 
 int main()
