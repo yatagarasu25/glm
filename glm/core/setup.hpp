@@ -529,9 +529,19 @@
 #	define GLM_ARCH GLM_ARCH_PURE
 #endif
 
+
+
 // Each intrinsic header will include headers for lower level intrinsics. For example, immintrin.h (AVX)
 // will include smmintrin.h (SSE4.2).
 #if(GLM_ARCH != GLM_ARCH_PURE)
+
+// With MinGW-W64, including intrinsic headers before intrin.h will produce some errors. The problem is
+// that windows.h (and maybe other headers) will silently include intrin.h, which of course causes problems.
+// To fix, we just explicitly include intrin.h here.
+#   if defined(__MINGW32__)
+#       include <intrin.h>
+#   endif
+
 #   if(  GLM_ARCH == GLM_ARCH_AVX )
 #	    include <immintrin.h>
 #   elif(GLM_ARCH == GLM_ARCH_SSE4)
