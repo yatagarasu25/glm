@@ -54,6 +54,14 @@
 #	pragma message("GLM: GLM_GTX_simd_vec4 extension included")
 #endif
 
+
+// Warning silencer for nameless struct/union.
+#if (GLM_COMPILER & GLM_COMPILER_VC)
+#   pragma warning(push)
+#   pragma warning(disable:4201)   // warning C4201: nonstandard extension used : nameless struct/union
+#endif
+
+
 namespace glm{
 namespace detail
 {
@@ -69,7 +77,15 @@ namespace detail
 		typedef fvec4SIMD type;
 		typedef tvec4<bool> bool_type;
 
-		__m128 Data;
+#ifndef GLM_SIMD_NO_TYPE_UNION
+        union
+        {
+		    __m128 Data;
+            struct {float x, y, z, w;};
+        };
+#else
+        __m128 Data;
+#endif
 
 		//////////////////////////////////////
 		// Implicit basic constructors
@@ -120,6 +136,12 @@ namespace detail
 
 		fvec4SIMD& operator++();
 		fvec4SIMD& operator--();
+
+        //////////////////////////////////////
+		// Accesses
+
+		      float & operator[](size_type i);
+		float const & operator[](size_type i) const;
 
 		//////////////////////////////////////
 		// Swizzle operators
@@ -489,6 +511,12 @@ namespace detail
 }//namespace glm
 
 #include "simd_vec4.inl"
+
+
+#if (GLM_COMPILER & GLM_COMPILER_VC)
+#   pragma warning(pop)
+#endif
+
 
 #endif//(GLM_ARCH != GLM_ARCH_PURE)
 

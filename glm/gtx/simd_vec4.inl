@@ -19,7 +19,10 @@ struct mask
 //////////////////////////////////////
 // Implicit basic constructors
 
-GLM_FUNC_QUALIFIER fvec4SIMD::fvec4SIMD()
+GLM_FUNC_QUALIFIER fvec4SIMD::fvec4SIMD() :
+#ifndef GLM_SIMD_NO_DEFAULT_INIT
+    Data(_mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f))
+#endif
 {}
 
 GLM_FUNC_QUALIFIER fvec4SIMD::fvec4SIMD(__m128 const & Data) :
@@ -153,6 +156,23 @@ GLM_FUNC_QUALIFIER fvec4SIMD& fvec4SIMD::operator--()
 {
 	this->Data = _mm_sub_ps(this->Data, glm::detail::one);
 	return *this;
+}
+
+//////////////////////////////////////
+// Accesses
+
+GLM_FUNC_QUALIFIER float & fvec4SIMD::operator[](size_type i)
+{
+    assert(i < 4);
+    return (&this->x)[i];
+    //return this->Data.m128_f32[i];
+}
+
+GLM_FUNC_QUALIFIER float const & fvec4SIMD::operator[](size_type i) const
+{
+    assert(i < 4);
+    return (&this->x)[i];
+    //return this->Data.m128_f32[i];
 }
 
 //////////////////////////////////////
@@ -614,9 +634,15 @@ GLM_FUNC_QUALIFIER float dot
 	detail::fvec4SIMD const & y
 )
 {
-	float Result = 0;
+    float Result;
+
+#if GLM_ARCH >= GLM_ARCH_SSE4
+    _mm_store_ss(&Result, _mm_dp_ps(x.Data, y.Data, 0xf1));
+#else
 	_mm_store_ss(&Result, detail::sse_dot_ss(x.Data, y.Data));
-	return Result;
+#endif
+
+    return Result;
 }
 
 GLM_FUNC_QUALIFIER detail::fvec4SIMD dot4

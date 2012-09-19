@@ -602,6 +602,13 @@ namespace detail
             Result.y = (m[1][2] + m[2][1]) * mult;
             Result.z = biggestVal;
             break;
+            
+        // -Wswitch-default silencer.
+        default:
+            {
+                assert(false);
+                break;
+            }
         }
         return Result;
     }

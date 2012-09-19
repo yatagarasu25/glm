@@ -470,7 +470,7 @@
 /////////////////
 // Platform 
 
-// User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_AVX
+// User defines: GLM_FORCE_PURE GLM_FORCE_SSE4 GLM_FORCE_SSE3 GLM_FORCE_SSE2 GLM_FORCE_AVX
 
 #define GLM_ARCH_PURE		0x0000
 #define GLM_ARCH_SSE2		0x0001
@@ -520,6 +520,13 @@
 | (defined(__SSE2__) ? GLM_ARCH_SSE2 : 0))
 #else
 #	define GLM_ARCH GLM_ARCH_PURE
+#endif
+
+// With MinGW-W64, including intrinsic headers before intrin.h will produce some errors. The problem is
+// that windows.h (and maybe other headers) will silently include intrin.h, which of course causes problems.
+// To fix, we just explicitly include intrin.h here.
+#if defined(__MINGW32__)
+#	include <intrin.h>
 #endif
 
 //#if(GLM_ARCH != GLM_ARCH_PURE)
