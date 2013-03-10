@@ -78,13 +78,13 @@ namespace detail
 		typedef tvec4<bool> bool_type;
 
 #ifndef GLM_SIMD_NO_TYPE_UNION
-        union
-        {
-		    __m128 Data;
-            struct {float x, y, z, w;};
-        };
+		union
+		{
+			__m128 Data;
+			struct {float x, y, z, w;};
+		};
 #else
-        __m128 Data;
+		__m128 Data;
 #endif
 
 		//////////////////////////////////////
