@@ -514,50 +514,79 @@
 /////////////////
 // Platform 
 
-// User defines: GLM_FORCE_PURE GLM_FORCE_SSE2 GLM_FORCE_AVX
+#define GLM_ARCH_PURE_BIT		(0 <<  0)
+#define GLM_ARCH_SSE2_BIT		(1 <<  0)
+#define GLM_ARCH_SSE3_BIT		(1 <<  1)
+#define GLM_ARCH_SSSE3_BIT		(1 <<  2)
+#define GLM_ARCH_SSE4_1_BIT		(1 <<  3)
+#define GLM_ARCH_SSE4_2_BIT		(1 <<  4)
+#define GLM_ARCH_AVX_BIT		(1 <<  5)
+#define GLM_ARCH_AVX2_BIT		(1 <<  6)
+#define GLM_ARCH_FMA3_BIT		(1 <<  7)
+#define GLM_ARCH_SSE4A_BIT		(1 <<  8)
+#define GLM_ARCH_FMA4_BIT		(1 <<  9)
+#define GLM_ARCH_NEON_BIT		(1 << 10)
 
-#define GLM_ARCH_PURE		0x0000
-#define GLM_ARCH_SSE2		0x0001
-#define GLM_ARCH_SSE3		0x0002// | GLM_ARCH_SSE2
-#define GLM_ARCH_SSE4		0x0004// | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
-#define GLM_ARCH_AVX		0x0008// | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
-#define GLM_ARCH_AVX2		0x0010// | GLM_ARCH_AVX | GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2
+#define GLM_ARCH_PURE			(GLM_ARCH_PURE_BIT)
+#define GLM_ARCH_SSE2			(GLM_ARCH_SSE2_BIT)
+#define GLM_ARCH_SSE3			(GLM_ARCH_SSE2 | GLM_ARCH_SSE3_BIT)
+#define GLM_ARCH_SSSE3			(GLM_ARCH_SSE3 | GLM_ARCH_SSSE3_BIT)
+#define GLM_ARCH_SSE4_1			(GLM_ARCH_SSSE3 | GLM_ARCH_SSE4_1_BIT)
+#define GLM_ARCH_SSE4_2			(GLM_ARCH_SSE4_1 | GLM_ARCH_SSE4_2_BIT)
+#define GLM_ARCH_AVX			(GLM_ARCH_SSE4_2 | GLM_ARCH_AVX_BIT)
+#define GLM_ARCH_AVX2			(GLM_ARCH_AVX | GLM_ARCH_AVX2_BIT)
+#define GLM_ARCH_FMA3			(GLM_ARCH_AVX2 | GLM_ARCH_FMA3_BIT)
+#define GLM_ARCH_SSE4A			(GLM_ARCH_SSE3 | GLM_ARCH_SSE4A_BIT)
+#define GLM_ARCH_FMA4			(GLM_ARCH_AVX | GLM_ARCH_FMA4_BIT)
+#define GLM_ARCH_NEON			(GLM_ARCH_NEON_BIT)
 
 #if(defined(GLM_FORCE_PURE))
 #	define GLM_ARCH GLM_ARCH_PURE
+#elif(defined(GLM_FORCE_NEON))
+#	define GLM_ARCH GLM_ARCH_NEON
+#elif(defined(GLM_FORCE_FMA4))
+#	define GLM_ARCH GLM_ARCH_FMA4
+#elif(defined(GLM_FORCE_SSE4A))
+#	define GLM_ARCH GLM_ARCH_SSE4A
+#elif(defined(GLM_FORCE_FMA3))
+#	define GLM_ARCH GLM_ARCH_FMA3
 #elif(defined(GLM_FORCE_AVX2))
-#	define GLM_ARCH (GLM_ARCH_AVX2 | GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	define GLM_ARCH GLM_ARCH_AVX2
 #elif(defined(GLM_FORCE_AVX))
-#	define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
-#elif(defined(GLM_FORCE_SSE4))
-#	define GLM_ARCH (GLM_ARCH_SSE4 | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	define GLM_ARCH GLM_ARCH_AVX
+#elif(defined(GLM_FORCE_SSE4_2))
+#	define GLM_ARCH GLM_ARCH_SSE4_2
+#elif(defined(GLM_FORCE_SSE4_1))
+#	define GLM_ARCH GLM_ARCH_SSE4_1
+#elif(defined(GLM_FORCE_SSSE3))
+#	define GLM_ARCH GLM_ARCH_SSSE3
 #elif(defined(GLM_FORCE_SSE3))
-#	define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#	define GLM_ARCH GLM_ARCH_SSE3
 #elif(defined(GLM_FORCE_SSE2))
-#	define GLM_ARCH (GLM_ARCH_SSE2)
+#	define GLM_ARCH GLM_ARCH_SSE2
 #elif((GLM_COMPILER & GLM_COMPILER_VC) && (defined(_M_IX86) || defined(_M_X64)))
 #	if(defined(_M_CEE_PURE))
 #		define GLM_ARCH GLM_ARCH_PURE
 /* TODO: Explore auto detection of instruction set support
 #	elif(defined(_M_IX86_FP))
 #		if(_M_IX86_FP >= 3)
-#			define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#			define GLM_ARCH GLM_ARCH_AVX
 #		elif(_M_IX86_FP >= 2)
-#			define GLM_ARCH (GLM_ARCH_SSE2)
+#			define GLM_ARCH GLM_ARCH_SSE2
 #		else
 #			define GLM_ARCH GLM_ARCH_PURE
 #		endif
 */
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2012)
-#		define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#		define GLM_ARCH GLM_ARCH_AVX
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2010)
 #		if(_MSC_FULL_VER >= 160031118) //160031118: VC2010 SP1 beta full version
-#			define GLM_ARCH (GLM_ARCH_AVX | GLM_ARCH_SSE3 | GLM_ARCH_SSE2)//GLM_ARCH_AVX (Require SP1)
+#			define GLM_ARCH GLM_ARCH_AVX // (Require SP1)
 #		else
-#			define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#			define GLM_ARCH GLM_ARCH_SSE3
 #		endif
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2008) 
-#		define GLM_ARCH (GLM_ARCH_SSE3 | GLM_ARCH_SSE2)
+#		define GLM_ARCH GLM_ARCH_SSE3
 #	elif(GLM_COMPILER >= GLM_COMPILER_VC2005)
 #		define GLM_ARCH GLM_ARCH_SSE2
 #	else
@@ -566,24 +595,34 @@
 #elif((GLM_PLATFORM & GLM_PLATFORM_APPLE) && (GLM_COMPILER & GLM_COMPILER_GCC))
 #	define GLM_ARCH GLM_ARCH_PURE
 #elif(((GLM_COMPILER & GLM_COMPILER_GCC) && (defined(__i386__) || defined(__x86_64__))) || (GLM_COMPILER & GLM_COMPILER_LLVM_GCC))
-#	define GLM_ARCH (GLM_ARCH_PURE \
-| (defined(__AVX2__) ? GLM_ARCH_AVX2 : 0) \
-| (defined(__AVX__) ? GLM_ARCH_AVX : 0) \
-| (defined(__SSE4__) ? GLM_ARCH_SSE4 : 0) \
-| (defined(__SSE3__) ? GLM_ARCH_SSE3 : 0) \
-| (defined(__SSE2__) ? GLM_ARCH_SSE2 : 0))
+#	if defined(__AVX2__)
+#		define GLM_ARCH GLM_ARCH_AVX2
+#	elif defined(__AVX__)
+#		define GLM_ARCH GLM_ARCH_AVX2
+#	elif defined(__SSE4__)
+#		define GLM_ARCH GLM_ARCH_SSE4_1
+#	elif defined(__SSE4__)
+#		define GLM_ARCH GLM_ARCH_SSE3
+#	elif defined(__SSE4__)
+#		define GLM_ARCH GLM_ARCH_SSE2
+#	else
+#		define GLM_ARCH GLM_ARCH_PURE
+#	endif
 #else
-#	define GLM_ARCH GLM_ARCH_PURE
+#	define GLM_ARCH glm::arch::PURE
 #endif
 
 // With MinGW-W64, including intrinsic headers before intrin.h will produce some errors. The problem is
 // that windows.h (and maybe other headers) will silently include intrin.h, which of course causes problems.
 // To fix, we just explicitly include intrin.h here.
-#if defined(__MINGW32__) && (GLM_ARCH != GLM_ARCH_PURE)
-#   include <intrin.h>
+#if(defined(__MINGW32__) && (GLM_ARCH != GLM_ARCH_PURE))
+#	include <intrin.h>
 #endif
 
 //#if(GLM_ARCH != GLM_ARCH_PURE)
+#if(GLM_ARCH & GLM_ARCH_NEON)
+#	include <arm_neon.h>
+#endif//GLM_ARCH
 #if(GLM_ARCH & GLM_ARCH_AVX2)
 #	include <immintrin.h>
 #endif//GLM_ARCH
