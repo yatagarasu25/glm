@@ -192,9 +192,57 @@ __m128 f32x4_dp_p_sse4(__m128 const & a, __m128 const & b)
 	return dot0;
 }
 
+int perf_dp_ref()
+{
+	std::size_t Count(100000);
+	std::size_t Items(1000);
+
+	std::vector<glm::vec4> init_a;
+	init_a.resize(Items);
+	std::vector<glm::vec4> init_b;
+	init_b.resize(Items);
+	std::vector<glm::vec4> a;
+	a.resize(Items);
+	std::vector<glm::vec4> b;
+	b.resize(Items);
+
+	// init
+	{
+		for(std::size_t i = 0; i < b.size(); ++i)
+		{
+			glm::vec4 v = glm::linearRand(glm::vec4(-1.0f), glm::vec4(1.0f));
+			init_a[i] = v;
+		}
+
+		for(std::size_t i = 0; i < b.size(); ++i)
+		{
+			glm::vec4 v = glm::linearRand(glm::vec4(-1.0f), glm::vec4(1.0f));
+			init_b[i] = v;
+		}
+	}
+
+	// ref
+	{
+		a = init_a;
+		b = init_b;
+
+		std::clock_t StartTime = std::clock();
+
+		for(std::size_t j = 0; j < Count; ++j)
+		for(std::size_t i = 0; i < b.size(); ++i)
+			b[i] = glm::vec4(glm::dot(a[i], b[i]));
+
+		std::clock_t EndTime = std::clock();
+
+		printf("dot ref %d\n", EndTime - StartTime);
+	}
+
+	return 0;
+}
+
 int perf_dp()
 {
-	std::size_t Count(1000);
+	std::size_t Count(100000);
 	std::size_t Items(1000);
 
 	std::vector<__m128> init_a;
@@ -289,6 +337,7 @@ int main()
 
 	int Error(0);
 
+	Error += perf_dp_ref();
 	Error += perf_dp();
 
 	while(true);
