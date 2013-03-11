@@ -194,7 +194,7 @@ __m128 f32x4_dp_p_sse4(__m128 const & a, __m128 const & b)
 
 int perf_dp()
 {
-	std::size_t Count(1000);
+	std::size_t Count(100000);
 	std::size_t Items(1000);
 
 	std::vector<__m128> init_a;
