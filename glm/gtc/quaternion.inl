@@ -715,22 +715,9 @@ namespace detail
         default:                // Silence a -Wswitch-default warning in GCC. Should never actually get here. Assert is just for sanity.
             assert(false);
             break;
-<<<<<<< HEAD
-            
-        // -Wswitch-default silencer.
-        default:
-            {
-                assert(false);
-                break;
-            }
         }
         return Result;
     }
-=======
-		}
-		return Result;
-	}
->>>>>>> add763742b36c3a5fb33a8e4397accdc50a89ffd
 
 	template <typename T> 
 	GLM_FUNC_QUALIFIER detail::tquat<T> quat_cast
