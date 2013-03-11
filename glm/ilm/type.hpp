@@ -143,6 +143,40 @@ namespace ilm
 	b128x1::b128x1(i32x4 const & x) : Data(_mm_castsi128_ps(x)){}
 	b128x1::b128x1(b32x4 const & x) : Data(x){}
 
+	inline bool all(f32x4 const & a)
+	{
+		__m128i cst0 = _mm_castps_si128(a);
+		__m128i srl0 = _mm_srli_si128(cst0, sizeof(__m128f) >> 1);
+		__m128i cmp0 = _mm_and_si128(cst0, srl0);
+		__m128i srl1 = _mm_srli_si128(cmp0, sizeof(float));
+		__m128i cmp1 = _mm_and_si128(cmp0, srl1);
+		int cmp2 = _mm_cvtsi128_si32(cmp1);
+		return cmp2 ? true : false;
+	}
+
+	inline bool any(f32x4 const & a)
+	{
+		__m128i cst0 = _mm_castps_si128(a);
+		__m128i srl0 = _mm_srli_si128(cst0, sizeof(__m128f) >> 1);
+		__m128i cmp0 = _mm_or_si128(cst0, srl0);
+		__m128i srl1 = _mm_srli_si128(cmp0, sizeof(float));
+		__m128i cmp1 = _mm_or_si128(cmp0, srl1);
+		int cmp2 = _mm_cvtsi128_si32(cmp1);
+		return cmp2 ? true : false;
+	}
+
+	inline bool operator==(f32x4 const & a, f32x4 const & b)
+	{
+		__m128f cmp0 = _mm_cmpeq_ps(a, b);
+		return all(cmp0);
+	}
+
+	inline bool operator!=(f32x4 const & a, f32x4 const & b)
+	{
+		__m128f cmp0 = _mm_cmpneq_ps(a, b);
+		return any(cmp0);
+	}
+
 
 /*
 	inline b32x4 all(b32x4 const & v)
