@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2005-12-21
 // Updated : 2008-07-24
@@ -43,15 +43,6 @@ namespace glm
 	)
 	{
 		return dot(x, x);
-	}
-
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T length2
-	(
-		detail::tquat<T> const & q
-	)
-	{
-		return q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
 	}
 
 	template <typename T> 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2011-09-19
 // Updated : 2011-09-19
@@ -11,6 +11,9 @@
 #include <glm/gtc/random.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <iostream>
+#if(GLM_LANG & GLM_LANG_CXX0X)
+#	include <array>
+#endif
 
 int test_linearRand()
 {
@@ -25,8 +28,8 @@ int test_linearRand()
 			ResultDouble += glm::linearRand(-1.0, 1.0);
 		}
 
-		Error += glm::equalEpsilon(ResultFloat, 0.0f, 0.0001f);
-		Error += glm::equalEpsilon(ResultDouble, 0.0, 0.0001);
+		Error += glm::epsilonEqual(ResultFloat, 0.0f, 0.0001f);
+		Error += glm::epsilonEqual(ResultDouble, 0.0, 0.0001);
 		assert(!Error);
 	}
 
@@ -49,8 +52,8 @@ int test_circularRand()
 			ResultDouble += glm::length(glm::circularRand(Radius));
 		}
 
-		Error += glm::equalEpsilon(ResultFloat, float(Max), 0.01f) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultDouble, double(Max) * double(Radius), 0.01) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultFloat, float(Max), 0.01f) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultDouble, double(Max) * double(Radius), 0.01) ? 0 : 1;
 		assert(!Error);
 	}
 
@@ -80,12 +83,12 @@ int test_sphericalRand()
 			ResultDoubleC += glm::length(glm::sphericalRand(3.0));
 		}
 
-		Error += glm::equalEpsilon(ResultFloatA, float(Max), 0.01f) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultDoubleA, double(Max), 0.0001) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultFloatB, float(Max * 2), 0.01f) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultDoubleB, double(Max * 2), 0.0001) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultFloatC, float(Max * 3), 0.01f) ? 0 : 1;
-		Error += glm::equalEpsilon(ResultDoubleC, double(Max * 3), 0.01) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultFloatA, float(Max), 0.01f) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultDoubleA, double(Max), 0.0001) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultFloatB, float(Max * 2), 0.01f) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultDoubleB, double(Max * 2), 0.0001) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultFloatC, float(Max * 3), 0.01f) ? 0 : 1;
+		Error += glm::epsilonEqual(ResultDoubleC, double(Max * 3), 0.01) ? 0 : 1;
 		assert(!Error);
 	}
 
@@ -135,6 +138,46 @@ int test_ballRand()
 
 	return Error;
 }
+
+#if(GLM_LANG & GLM_LANG_CXX0X)
+int test_grid()
+{
+	int Error = 0;
+
+	typedef std::array<int, 8> colors;
+	typedef std::array<int, 8 * 8> grid;
+
+	grid Grid;
+	colors Colors;
+
+	grid GridBest;
+	colors ColorsBest;
+
+	while(true)
+	{
+		for(std::size_t i = 0; i < Grid.size(); ++i)
+			Grid[i] = int(glm::linearRand(0.0, 8.0 * 8.0 * 8.0 - 1.0) / 64.0);
+
+		for(std::size_t i = 0; i < Grid.size(); ++i)
+			++Colors[Grid[i]];
+
+		bool Exit = true;
+		for(std::size_t i = 0; i < Colors.size(); ++i)
+		{
+			if(Colors[i] == 8)
+				continue;
+
+			Exit = false;
+			break;
+		}
+
+		if(Exit == true)
+			break;
+	}
+
+	return Error;
+}
+#endif
 
 int main()
 {

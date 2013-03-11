@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -28,10 +28,10 @@
 /// @see core (dependence)
 /// @see gtx_quaternion (dependence)
 ///
-/// @defgroup gtx_norm GLM_GTX_norm: Vector norm calculations
+/// @defgroup gtx_norm GLM_GTX_norm
 /// @ingroup gtx
 /// 
-/// @brief Various way to compute vector norms.
+/// @brief Various ways to compute vector norms.
 /// 
 /// <glm/gtx/norm.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
@@ -64,12 +64,6 @@ namespace glm
 	typename genType::value_type length2(
 		genType const & x);
 		
-	//! Returns the squared length of x.
-	//! From GLM_GTX_norm extension.
-	template <typename T>
-	T length2(
-		detail::tquat<T> const & q);
-
 	//! Returns the squared distance between p0 and p1, i.e., length(p0 - p1).
 	//! From GLM_GTX_norm extension.
 	template <typename T>

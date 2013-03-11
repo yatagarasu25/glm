@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2009-05-19
 // Updated : 2009-05-19
@@ -27,7 +27,11 @@ GLM_FUNC_QUALIFIER fmat4x4SIMD::size_type fmat4x4SIMD::row_size()
 
 GLM_FUNC_QUALIFIER fmat4x4SIMD::fmat4x4SIMD()
 {
+<<<<<<< HEAD
 #ifndef GLM_SIMD_NO_DEFAULT_INIT
+=======
+#ifndef GLM_SIMD_ENABLE_DEFAULT_INIT
+>>>>>>> add763742b36c3a5fb33a8e4397accdc50a89ffd
     this->Data[0] = fvec4SIMD(1.0f, 0, 0, 0);
 	this->Data[1] = fvec4SIMD(0, 1.0f, 0, 0);
 	this->Data[2] = fvec4SIMD(0, 0, 1.0f, 0);
@@ -102,7 +106,11 @@ GLM_FUNC_QUALIFIER fvec4SIMD & fmat4x4SIMD::operator[]
 )
 {
 	assert(
+<<<<<<< HEAD
 		/*i >= fmat4x4SIMD::size_type(0) &&*/
+=======
+		//i >= fmat4x4SIMD::size_type(0) &&
+>>>>>>> add763742b36c3a5fb33a8e4397accdc50a89ffd
 		i < fmat4x4SIMD::col_size());
 
 	return this->Data[i];
@@ -114,7 +122,11 @@ GLM_FUNC_QUALIFIER fvec4SIMD const & fmat4x4SIMD::operator[]
 ) const
 {
 	assert(
+<<<<<<< HEAD
 		/*i >= fmat4x4SIMD::size_type(0) &&*/
+=======
+		//i >= fmat4x4SIMD::size_type(0) &&
+>>>>>>> add763742b36c3a5fb33a8e4397accdc50a89ffd
 		i < fmat4x4SIMD::col_size());
 
 	return this->Data[i];
@@ -518,7 +530,10 @@ GLM_FUNC_QUALIFIER fmat4x4SIMD const operator++
     );
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> add763742b36c3a5fb33a8e4397accdc50a89ffd
 }//namespace detail
 
 GLM_FUNC_QUALIFIER detail::tmat4x4<float> mat4_cast

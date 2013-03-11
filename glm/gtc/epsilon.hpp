@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -29,7 +29,7 @@
 /// @see gtc_half_float (dependence)
 /// @see gtc_quaternion (dependence)
 ///
-/// @defgroup gtc_epsilon GLM_GTC_epsilon: Epsilon comparison
+/// @defgroup gtc_epsilon GLM_GTC_epsilon
 /// @ingroup gtc
 /// 
 /// @brief Comparison functions for a user defined epsilon values.
@@ -56,19 +56,35 @@ namespace glm
 
 	/// Returns the component-wise compare of |x - y| < epsilon.
 	/// @see gtc_epsilon
-	template <typename genTypeT, typename genTypeU> 
-	bool equalEpsilon(
-		genTypeT const & x, 
-		genTypeT const & y, 
-		genTypeU const & epsilon);
-		
+	template <typename genType>
+	typename genType::boolType epsilonEqual(
+		genType const & x,
+		genType const & y,
+		typename genType::value_type const & epsilon);
+
+	/// Returns the component-wise compare of |x - y| < epsilon.
+	/// @see gtc_epsilon
+	template <typename genType> 
+	typename genType::boolType epsilonEqual(
+		genType const & x, 
+		genType const & y, 
+		genType const & epsilon);
+
+	/// Returns the component-wise compare of |x - y| < epsilon.
+	/// @see gtc_epsilon
+	template <typename genType>
+	typename genType::boolType epsilonNotEqual(
+		genType const & x,
+		genType const & y,
+		typename genType::value_type const & epsilon);
+
 	/// Returns the component-wise compare of |x - y| >= epsilon.
 	/// @see gtc_epsilon
-	template <typename genTypeT, typename genTypeU>
-	bool notEqualEpsilon(
-		genTypeT const & x, 
-		genTypeT const & y, 
-		genTypeU const & epsilon);
+	template <typename genType>
+	typename genType::boolType epsilonNotEqual(
+		genType const & x, 
+		genType const & y, 
+		genType const & epsilon);
 
 	/// @}
 }//namespace glm

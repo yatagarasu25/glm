@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -27,6 +27,55 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm{
+namespace ilm // Instruction Level Math
+{
+#if(GLM_ARCH & GLM_ARCH_SSE2)
+	typedef __m128 f32x4;
+	typedef __m128i i32x4;
+	typedef __m128i u32x4;
+	typedef __m128d f64x2;
+
+	typedef __m256 f32x8;
+	typedef __m256i i32x8;
+	typedef __m256i i32x8;
+	typedef __m256d f64x4;
+#elif(GLM_ARCH & GLM_ARCH_NEON)
+
+#else
+	typedef glm::vec4 f32x4;
+#endif
+
+// Type f16, f32, f64, i8, i16, i32, i64, i128, i256, u8, u16, u32, u64, u128, u256, 
+// Register use: s, p
+GLM_FUNC_QUALIFIER f32x4 f32x4_dp_p(f32x4 const & a, f32x4 const & b);
+
+/// 4 components vector simd dot product
+GLM_FUNC_QUALIFIER f32x4 f32x4_dp_p(f32x4 const & a, f32x4 const & b)
+{
+#	if(GLM_ARCH & GLM_ARCH_SSE4)
+		__m128 dot0 = _mm_dp_ps(a, b, 0xff);
+		return dot0;
+#	elif(GLM_ARCH & GLM_ARCH_SSE3)
+		__m128 mul0 = _mm_mul_ps(a, b);
+		__m128 hadd0 = _mm_hadd_ps(mul0, mul0);
+		__m128 hadd1 = _mm_hadd_ps(hadd0, hadd0);
+		return hadd1;
+#	elif(GLM_ARCH & GLM_ARCH_SSE2)
+		__m128 mul0 = _mm_mul_ps(a, b);
+		__m128 swp0 = _mm_shuffle_ps(mul0, mul0, _MM_SHUFFLE(2, 3, 0, 1));
+		__m128 add0 = _mm_add_ps(mul0, swp0);
+		__m128 swp1 = _mm_shuffle_ps(add0, add0, _MM_SHUFFLE(0, 1, 2, 3));
+		__m128 add1 = _mm_add_ps(add0, swp1);
+		return add1;
+#	elif(GLM_ARCH & GLM_ARCH_NEON)
+		
+#	else
+		return glm::vec4(x.x * y.x + x.y * y.y + x.z * y.z + x.w * y.w);
+#	endif
+}
+
+}//namespace ilm
+
 namespace detail{
 
 //length

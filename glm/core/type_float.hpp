@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -32,39 +32,45 @@
 #include "type_half.hpp"
 #include "setup.hpp"
 
-namespace glm
+namespace glm{
+namespace detail
 {
+	typedef detail::half		float16;
+	typedef float				float32;
+	typedef double				float64;
+}//namespace detail
+
 #ifdef GLM_USE_HALF_SCALAR
-    typedef detail::half		lowp_float_t;
+	typedef detail::half		lowp_float_t;
 #else//GLM_USE_HALF_SCALAR
-    typedef float				lowp_float_t;
+	typedef float				lowp_float_t;
 #endif//GLM_USE_HALF_SCALAR
-    typedef float				mediump_float_t;
-    typedef double				highp_float_t;
+	typedef float				mediump_float_t;
+	typedef double				highp_float_t;
 
 	/// @addtogroup core_precision
 	/// @{
 
-    /// Low precision floating-point numbers. 
-    /// There is no guarantee on the actual precision.
+	/// Low precision floating-point numbers. 
+	/// There is no guarantee on the actual precision.
 	/// 
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.4 Floats</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-    typedef lowp_float_t		lowp_float;
-    
-    /// Medium precision floating-point numbers.
-    /// There is no guarantee on the actual precision.
+	typedef lowp_float_t		lowp_float;
+
+	/// Medium precision floating-point numbers.
+	/// There is no guarantee on the actual precision.
 	/// 
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.4 Floats</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-    typedef mediump_float_t     mediump_float;
-    
-    /// High precision floating-point numbers.
-    /// There is no guarantee on the actual precision.
+	typedef mediump_float_t     mediump_float;
+
+	/// High precision floating-point numbers.
+	/// There is no guarantee on the actual precision.
 	/// 
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.4 Floats</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-    typedef highp_float_t		highp_float;
+	typedef highp_float_t		highp_float;
 
 #if(!defined(GLM_PRECISION_HIGHP_FLOAT) && !defined(GLM_PRECISION_MEDIUMP_FLOAT) && !defined(GLM_PRECISION_LOWP_FLOAT))
 	typedef mediump_float				float_t;
@@ -78,7 +84,47 @@ namespace glm
 #	error "GLM error: multiple default precision requested for floating-point types"
 #endif
 
+	typedef detail::half				float16;
+	typedef float						float32;
+	typedef double						float64;
+
 	/// @}
+
+////////////////////
+// check type sizes
+#ifndef GLM_STATIC_ASSERT_NULL
+	GLM_STATIC_ASSERT(sizeof(glm::float16) == 2, "float16 size isn't 2 bytes on this platform");
+	GLM_STATIC_ASSERT(sizeof(glm::float32) == 4, "float32 size isn't 4 bytes on this platform");
+	GLM_STATIC_ASSERT(sizeof(glm::float64) == 8, "float64 size isn't 8 bytes on this platform");
+#endif//GLM_STATIC_ASSERT_NULL
+
+namespace detail
+{
+	////////////////////
+	// Mark half to be flaot
+	GLM_DETAIL_IS_FLOAT(detail::half);
+	GLM_DETAIL_IS_FLOAT(float);
+	GLM_DETAIL_IS_FLOAT(double);
+	GLM_DETAIL_IS_FLOAT(long double);
+
+	template <>
+	struct float_or_int_trait<float16>
+	{
+		enum{ID = float_or_int_value::GLM_FLOAT};
+	};
+
+	template <>
+	struct float_or_int_trait<float32>
+	{
+		enum{ID = float_or_int_value::GLM_FLOAT};
+	};
+
+	template <>
+	struct float_or_int_trait<float64>
+	{
+		enum{ID = float_or_int_value::GLM_FLOAT};
+	};
+}//namespace detail
 }//namespace glm
 
 #endif//glm_core_type_float

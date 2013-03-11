@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -48,12 +48,10 @@ namespace detail
 	template <typename T> struct tmat4x3;
 	template <typename T> struct tmat4x4;
 
-	// @brief Template for 2 * 2 matrix of floating-point numbers.
-	// @ingroup core_template
 	template <typename T> 
 	struct tmat2x2
 	{
-        // Implementation detail
+		// Implementation detail
 		enum ctor{null};
 		typedef T value_type;
 		typedef std::size_t size_type;
@@ -64,9 +62,9 @@ namespace detail
 
 		static GLM_FUNC_DECL size_type col_size();
 		static GLM_FUNC_DECL size_type row_size();
-        
+
 		GLM_FUNC_DECL GLM_CONSTEXPR size_type length() const;
-        
+
 	public:
 		// Implementation detail
 		GLM_FUNC_DECL tmat2x2<T> _inverse() const;
@@ -75,7 +73,7 @@ namespace detail
 		//////////////////////////////////////
 		// Implementation detail
 		col_type value[2];
-        
+
 	public:
 		//////////////////////////////////////
 		// Constructors
@@ -169,7 +167,7 @@ namespace detail
 	tmat2x2<T> operator+ (
 		tmat2x2<T> const & m1, 
 		tmat2x2<T> const & m2);
-	    
+
 	template <typename T> 
 	tmat2x2<T> operator- (
 		tmat2x2<T> const & m, 

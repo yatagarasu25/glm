@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2005-12-21
 // Updated : 2008-11-27
@@ -40,7 +40,7 @@ namespace glm
 		detail::tquat<T> const & s2, 
 		T const & h)
 	{
-		return mix(mix(q1, q2, h), mix(s1, s2, h), T(2) * h (T(1) - h));
+		return mix(mix(q1, q2, h), mix(s1, s2, h), T(2) * (T(1) - h) * h);
 	}
 
 	template <typename T> 
@@ -52,20 +52,19 @@ namespace glm
 	)
 	{
 		detail::tquat<T> invQuat = inverse(curr);
-		return ext((log(next + invQuat) + log(prev + invQuat)) / T(-4)) * curr;
+		return exp((log(next + invQuat) + log(prev + invQuat)) / T(-4)) * curr;
 	}
 
 	template <typename T> 
 	GLM_FUNC_QUALIFIER detail::tquat<T> exp
 	(
-		detail::tquat<T> const & q, 
-		T const & exponent
+		detail::tquat<T> const & q
 	)
 	{
 		detail::tvec3<T> u(q.x, q.y, q.z);
-		float a = glm::length(u);
-		detail::tvec3<T> v(u / a);
-		return detail::tquat<T>(cos(a), sin(a) * v);
+		float Angle = glm::length(u);
+		detail::tvec3<T> v(u / Angle);
+		return detail::tquat<T>(cos(Angle), sin(Angle) * v);
 	}
 
 	template <typename T> 
@@ -154,43 +153,13 @@ namespace glm
 			return -sqrt(w);
 	}
 
-	template <typename valType> 
-	GLM_FUNC_QUALIFIER valType roll
+	template <typename T> 
+	GLM_FUNC_QUALIFIER T length2
 	(
-		detail::tquat<valType> const & q
+		detail::tquat<T> const & q
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
-		return atan2(valType(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z);
-#else
-		return glm::degrees(atan2(valType(2) * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z));
-#endif
-	}
-
-	template <typename valType> 
-	GLM_FUNC_QUALIFIER valType pitch
-	(
-		detail::tquat<valType> const & q
-	)
-	{
-#ifdef GLM_FORCE_RADIANS
-		return atan2(valType(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z);
-#else
-		return glm::degrees(atan2(valType(2) * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z));
-#endif
-	}
-
-	template <typename valType> 
-	GLM_FUNC_QUALIFIER valType yaw
-	(
-		detail::tquat<valType> const & q
-	)
-	{
-#ifdef GLM_FORCE_RADIANS
-		return asin(valType(-2) * (q.x * q.z - q.w * q.y));
-#else
-		return glm::degrees(asin(valType(-2) * (q.x * q.z - q.w * q.y)));
-#endif
+		return q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
 	}
 
 	template <typename T>
@@ -245,4 +214,43 @@ namespace glm
 	{
 		return glm::normalize(x * (T(1) - a) + (y * a));
 	}
+
+	template <typename T>
+	GLM_FUNC_QUALIFIER detail::tquat<T> rotation
+	(
+		detail::tvec3<T> const & orig, 
+		detail::tvec3<T> const & dest
+	)
+	{
+		T cosTheta = dot(orig, dest);
+		detail::tvec3<T> rotationAxis;
+
+		if(cosTheta < T(-1) + epsilon<T>())
+		{
+			// special case when vectors in opposite directions :
+			// there is no "ideal" rotation axis
+			// So guess one; any will do as long as it's perpendicular to start
+			// This implementation favors a rotation around the Up axis (Y),
+			// since it's often what you want to do.
+			rotationAxis = cross(detail::tvec3<T>(0, 0, 1), orig);
+			if(length2(rotationAxis) < epsilon<T>()) // bad luck, they were parallel, try again!
+				rotationAxis = cross(detail::tvec3<T>(1, 0, 0), orig);
+
+			rotationAxis = normalize(rotationAxis);
+			return angleAxis(pi<T>(), rotationAxis);
+		}
+
+		// Implementation from Stan Melax's Game Programming Gems 1 article
+		rotationAxis = cross(orig, dest);
+
+		T s = sqrt((T(1) + cosTheta) * T(2));
+		T invs = T(1) / s;
+
+		return detail::tquat<T>(
+			s * T(0.5f), 
+			rotationAxis.x * invs,
+			rotationAxis.y * invs,
+			rotationAxis.z * invs);
+	}
+
 }//namespace glm

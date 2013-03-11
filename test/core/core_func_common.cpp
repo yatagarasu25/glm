@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2011-01-15
 // Updated : 2011-09-13
@@ -33,7 +33,7 @@ int test_modf()
 		glm::vec4 A = glm::modf(X, I);
 
 		Error += I == glm::vec4(1.0f) ? 0 : 1;
-		Error += glm::all(glm::equalEpsilon(A, glm::vec4(0.1f, 0.2f, 0.5f, 0.7f), 0.00001f)) ? 0 : 1;
+		Error += glm::all(glm::epsilonEqual(A, glm::vec4(0.1f, 0.2f, 0.5f, 0.7f), 0.00001f)) ? 0 : 1;
 	}
 
 	{
@@ -42,7 +42,7 @@ int test_modf()
 		glm::dvec4 A = glm::modf(X, I);
 
 		Error += I == glm::dvec4(1.0) ? 0 : 1;
-		Error += glm::all(glm::equalEpsilon(A, glm::dvec4(0.1, 0.2, 0.5, 0.7), 0.000000001)) ? 0 : 1;
+		Error += glm::all(glm::epsilonEqual(A, glm::dvec4(0.1, 0.2, 0.5, 0.7), 0.000000001)) ? 0 : 1;
 	}
 
 	{
@@ -216,67 +216,67 @@ int test_roundEven()
 
 	{
 		float A = glm::roundEven(-1.5f);
-		Error += glm::equalEpsilon(A, -2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(1.5f);
-		Error += glm::equalEpsilon(A, 2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
 	{
 		float A = glm::roundEven(-3.5f);
-		Error += glm::equalEpsilon(A, -4.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -4.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(3.5f);
-		Error += glm::equalEpsilon(A, 4.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 4.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
 	{
 		float A = glm::roundEven(-2.5f);
-		Error += glm::equalEpsilon(A, -2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(2.5f);
-		Error += glm::equalEpsilon(A, 2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
 	{
 		float A = glm::roundEven(-2.4f);
-		Error += glm::equalEpsilon(A, -2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(2.4f);
-		Error += glm::equalEpsilon(A, 2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
 	{
 		float A = glm::roundEven(-2.6f);
-		Error += glm::equalEpsilon(A, -3.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -3.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(2.6f);
-		Error += glm::equalEpsilon(A, 3.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 3.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
 	{
 		float A = glm::roundEven(-2.0f);
-		Error += glm::equalEpsilon(A, -2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, -2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 	{
 		float A = glm::roundEven(2.0f);
-		Error += glm::equalEpsilon(A, 2.0f, 0.0001f) ? 0 : 1;
+		Error += glm::epsilonEqual(A, 2.0f, 0.0001f) ? 0 : 1;
 		Error += 0;
 	}
 
@@ -364,14 +364,14 @@ int test_isnan()
  		Error += true == glm::any(glm::isnan(glm::dvec3(0.0 / Zero_d))) ? 0 : 1;
  		Error += true == glm::any(glm::isnan(glm::dvec4(0.0 / Zero_d))) ? 0 : 1;
 	}
-/*
+
 	{
  		Error += true == glm::isnan(0.0f/Zero_f) ? 0 : 1;
  		Error += true == glm::any(glm::isnan(glm::vec2(0.0f/Zero_f))) ? 0 : 1;
  		Error += true == glm::any(glm::isnan(glm::vec3(0.0f/Zero_f))) ? 0 : 1;
  		Error += true == glm::any(glm::isnan(glm::vec4(0.0f/Zero_f))) ? 0 : 1;
 	}
-*/
+
 	return Error;
 }
  

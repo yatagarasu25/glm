@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2012 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2009-05-07
 // Updated : 2009-05-07
@@ -21,7 +21,7 @@ struct mask
 
 GLM_FUNC_QUALIFIER fvec4SIMD::fvec4SIMD() :
 #ifndef GLM_SIMD_NO_DEFAULT_INIT
-    Data(_mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f))
+	Data(_mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f))
 #endif
 {}
 
@@ -163,16 +163,16 @@ GLM_FUNC_QUALIFIER fvec4SIMD& fvec4SIMD::operator--()
 
 GLM_FUNC_QUALIFIER float & fvec4SIMD::operator[](size_type i)
 {
-    assert(i < 4);
-    return (&this->x)[i];
-    //return this->Data.m128_f32[i];
+	assert(i < 4);
+	//return (&this->x)[i];
+	return this->Data.m128_f32[i];
 }
 
 GLM_FUNC_QUALIFIER float const & fvec4SIMD::operator[](size_type i) const
 {
-    assert(i < 4);
-    return (&this->x)[i];
-    //return this->Data.m128_f32[i];
+	assert(i < 4);
+	//return (&this->x)[i];
+	return this->Data.m128_f32[i];
 }
 
 //////////////////////////////////////
@@ -469,7 +469,7 @@ GLM_FUNC_QUALIFIER detail::fvec4SIMD mix
 {
 	__m128 Sub0 = _mm_sub_ps(y.Data, x.Data);
 	__m128 Mul0 = _mm_mul_ps(a.Data, Sub0);
-	return _mm_mul_ps(x.Data, Mul0);
+	return _mm_add_ps(x.Data, Mul0);
 }
 
 GLM_FUNC_QUALIFIER detail::fvec4SIMD step
