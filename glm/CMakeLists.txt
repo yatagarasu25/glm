@@ -8,6 +8,10 @@ file(GLOB_RECURSE CORE_SOURCE ./core/*.cpp)
 file(GLOB_RECURSE CORE_INLINE ./core/*.inl)
 file(GLOB_RECURSE CORE_HEADER ./core/*.hpp)
 
+file(GLOB_RECURSE ILM_SOURCE ./ilm/*.cpp)
+file(GLOB_RECURSE ILM_INLINE ./ilm/*.inl)
+file(GLOB_RECURSE ILM_HEADER ./ilm/*.hpp)
+
 file(GLOB_RECURSE GTC_SOURCE ./gtc/*.cpp)
 file(GLOB_RECURSE GTC_INLINE ./gtc/*.inl)
 file(GLOB_RECURSE GTC_HEADER ./gtc/*.hpp)
@@ -23,6 +27,9 @@ file(GLOB_RECURSE VIRTREV_HEADER ./virtrev/*.hpp)
 source_group("Core Files" FILES ${CORE_SOURCE})
 source_group("Core Files" FILES ${CORE_INLINE})
 source_group("Core Files" FILES ${CORE_HEADER})
+source_group("ILM Files" FILES ${ILM_SOURCE})
+source_group("ILM Files" FILES ${ILM_INLINE})
+source_group("ILM Files" FILES ${ILM_HEADER})
 source_group("GTC Files" FILES ${GTC_SOURCE})
 source_group("GTC Files" FILES ${GTC_INLINE})
 source_group("GTC Files" FILES ${GTC_HEADER})
@@ -38,6 +45,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(${NAME} 
 	${ROOT_SOURCE}    ${ROOT_INLINE}    ${ROOT_HEADER} 
 	${CORE_SOURCE}    ${CORE_INLINE}    ${CORE_HEADER}
+	${ILM_SOURCE}     ${ILM_INLINE}     ${ILM_HEADER} 
 	${GTC_SOURCE}     ${GTC_INLINE}     ${GTC_HEADER} 
 	${GTX_SOURCE}     ${GTX_INLINE}     ${GTX_HEADER} 
 	${VIRTREV_SOURCE} ${VIRTREV_INLINE} ${VIRTREV_HEADER})

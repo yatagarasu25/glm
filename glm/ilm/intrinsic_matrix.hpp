@@ -21,59 +21,49 @@
 /// THE SOFTWARE.
 ///
 /// @ref core
-/// @file glm/core/intrinsic_exponential.hpp
-/// @date 2009-05-11 / 2011-06-15
+/// @file glm/core/intrinsic_common.hpp
+/// @date 2009-06-05 / 2011-06-15
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_detail_intrinsic_exponential
-#define glm_detail_intrinsic_exponential
+#ifndef glm_detail_intrinsic_matrix
+#define glm_detail_intrinsic_matrix
 
-#include "setup.hpp"
+#include "../core/setup.hpp"
 
 #if(!(GLM_ARCH & GLM_ARCH_SSE2))
 #	error "SSE2 instructions not supported or enabled"
 #else
 
+#include "intrinsic_geometric.hpp"
+
 namespace glm{
 namespace detail
 {
-/*
-GLM_FUNC_QUALIFIER __m128 sse_rsqrt_nr_ss(__m128 const x)
-{
-	__m128 recip = _mm_rsqrt_ss( x );  // "estimate" opcode
-	const static __m128 three = { 3, 3, 3, 3 }; // aligned consts for fast load
-	const static __m128 half = { 0.5,0.5,0.5,0.5 };
-	__m128 halfrecip = _mm_mul_ss( half, recip );
-	__m128 threeminus_xrr = _mm_sub_ss( three, _mm_mul_ss( x, _mm_mul_ss ( recip, recip ) ) );
-	return _mm_mul_ss( halfrecip, threeminus_xrr );
-}
- 
-GLM_FUNC_QUALIFIER __m128 sse_normalize_fast_ps(  float * RESTRICT vOut, float * RESTRICT vIn )
-{
-        __m128 x = _mm_load_ss(&vIn[0]);
-        __m128 y = _mm_load_ss(&vIn[1]);
-        __m128 z = _mm_load_ss(&vIn[2]);
- 
-        const __m128 l =  // compute x*x + y*y + z*z
-                _mm_add_ss(
-                 _mm_add_ss( _mm_mul_ss(x,x),
-                             _mm_mul_ss(y,y)
-                            ),
-                 _mm_mul_ss( z, z )
-                );
- 
- 
-        const __m128 rsqt = _mm_rsqrt_nr_ss( l );
-        _mm_store_ss( &vOut[0] , _mm_mul_ss( rsqt, x ) );
-        _mm_store_ss( &vOut[1] , _mm_mul_ss( rsqt, y ) );
-        _mm_store_ss( &vOut[2] , _mm_mul_ss( rsqt, z ) );
- 
-        return _mm_mul_ss( l , rsqt );
-}
-*/
+	void sse_add_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
+
+	void sse_sub_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
+
+	__m128 sse_mul_ps(__m128 const m[4], __m128 v);
+
+	__m128 sse_mul_ps(__m128 v, __m128 const m[4]);
+
+	void sse_mul_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
+
+	void sse_transpose_ps(__m128 const in[4], __m128 out[4]);
+
+	void sse_inverse_ps(__m128 const in[4], __m128 out[4]);
+
+	void sse_rotate_ps(__m128 const in[4], float Angle, float const v[3], __m128 out[4]);
+
+	__m128 sse_det_ps(__m128 const m[4]);
+
+	__m128 sse_slow_det_ps(__m128 const m[4]);
+
 }//namespace detail
 }//namespace glm
 
+#include "intrinsic_matrix.inl"
+
 #endif//GLM_ARCH
-#endif//glm_detail_intrinsic_exponential
+#endif//glm_detail_intrinsic_matrix

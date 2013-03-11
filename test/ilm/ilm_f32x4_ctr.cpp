@@ -1,0 +1,26 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Created : 2013-03-11
+// Updated : 2013-03-11
+// Licence : This source is under MIT licence
+// File    : test/ilm/ilm_f32x4_ctr.cpp
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <glm/glm.hpp>
+#include <glm/ilm.hpp>
+#include <cstdio>
+
+int main()
+{
+	int Error(0);
+
+	{
+		ilm::f32x4 a(0.0f);
+		ilm::f32x4 b(0.0f, 0.0f, 0.0f, 0.0f);
+		//Error += a == b ? 0 : 1;
+	}
+
+	return Error;
+}
+

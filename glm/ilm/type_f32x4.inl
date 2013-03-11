@@ -20,29 +20,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ///
-/// @ref core
-/// @file glm/core/intrinsic_vector_relational.hpp
-/// @date 2009-06-09 / 2011-06-15
+/// @ref ilm
+/// @file glm/ilm/type_f32x4.inl
+/// @date 2013-03-11 / 2013-03-11
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
-
-#ifndef glm_detail_intrinsic_vector_relational
-#define glm_detail_intrinsic_vector_relational
-
-#include "setup.hpp"
-
-#if(!(GLM_ARCH & GLM_ARCH_SSE2))
-#	error "SSE2 instructions not supported or enabled"
-#else
-
-namespace glm{
-namespace detail
-{
-
-}//namespace detail
-}//namespace glm
-
-#include "intrinsic_vector_relational.inl"
-
-#endif//GLM_ARCH
-#endif//glm_detail_intrinsic_vector_relational

@@ -14,7 +14,7 @@
 #include <glm/gtx/bit.hpp>
 
 #if(GLM_ARCH != GLM_ARCH_PURE)
-#	include <glm/core/intrinsic_integer.hpp>
+#	include <glm/ilm.hpp>
 #endif
 
 #include <iostream>

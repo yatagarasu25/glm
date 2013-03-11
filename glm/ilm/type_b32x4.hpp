@@ -20,50 +20,23 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ///
-/// @ref core
-/// @file glm/core/intrinsic_common.hpp
-/// @date 2009-06-05 / 2011-06-15
+/// @ref ilm
+/// @file glm/ilm/type_b32x4.hpp
+/// @date 2013-03-11 / 2013-03-11
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_detail_intrinsic_matrix
-#define glm_detail_intrinsic_matrix
+#ifndef ILM_TYPE_B32X4_INCLUDED
+#define ILM_TYPE_B32X4_INCLUDED
 
-#include "setup.hpp"
+#include "type.hpp"
 
-#if(!(GLM_ARCH & GLM_ARCH_SSE2))
-#	error "SSE2 instructions not supported or enabled"
-#else
-
-#include "intrinsic_geometric.hpp"
-
-namespace glm{
-namespace detail
+namespace ilm
 {
-	void sse_add_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
 
-	void sse_sub_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
+}//namespace ilm
 
-	__m128 sse_mul_ps(__m128 const m[4], __m128 v);
+#include "type_b32x4.inl"
 
-	__m128 sse_mul_ps(__m128 v, __m128 const m[4]);
+#endif//ILM_TYPE_B32X4_INCLUDED
 
-	void sse_mul_ps(__m128 const in1[4], __m128 const in2[4], __m128 out[4]);
-
-	void sse_transpose_ps(__m128 const in[4], __m128 out[4]);
-
-	void sse_inverse_ps(__m128 const in[4], __m128 out[4]);
-
-	void sse_rotate_ps(__m128 const in[4], float Angle, float const v[3], __m128 out[4]);
-
-	__m128 sse_det_ps(__m128 const m[4]);
-
-	__m128 sse_slow_det_ps(__m128 const m[4]);
-
-}//namespace detail
-}//namespace glm
-
-#include "intrinsic_matrix.inl"
-
-#endif//GLM_ARCH
-#endif//glm_detail_intrinsic_matrix

@@ -20,70 +20,22 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ///
-/// @ref core
-/// @file glm/core/intrinsic_common.hpp
-/// @date 2009-05-11 / 2011-06-15
+/// @ref ilm
+/// @file glm/ilm/type_b128x1.hpp
+/// @date 2013-03-11 / 2013-03-11
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_detail_intrinsic_common
-#define glm_detail_intrinsic_common
+#ifndef ILM_TYPE_B128X1_INCLUDED
+#define ILM_TYPE_B128X1_INCLUDED
 
-#include "setup.hpp"
+#include "type.hpp"
 
-#if(!(GLM_ARCH & GLM_ARCH_SSE2))
-#	error "SSE2 instructions not supported or enabled"
-#else
-
-namespace glm{
-namespace detail
+namespace ilm
 {
-	__m128 sse_abs_ps(__m128 x);
 
-	__m128 sse_sgn_ps(__m128 x);
+}//namespace ilm
 
-	//floor
-	__m128 sse_flr_ps(__m128 v);
+#include "type_b128x1.inl"
 
-	//trunc
-	__m128 sse_trc_ps(__m128 v);
-
-	//round
-	__m128 sse_nd_ps(__m128 v);
-
-	//roundEven
-	__m128 sse_rde_ps(__m128 v);
-
-	__m128 sse_rnd_ps(__m128 x);
-
-	__m128 sse_ceil_ps(__m128 v);
-
-	__m128 sse_frc_ps(__m128 x);
-
-	__m128 sse_mod_ps(__m128 x, __m128 y);
-
-	__m128 sse_modf_ps(__m128 x, __m128i & i);
-
-	//GLM_FUNC_QUALIFIER __m128 sse_min_ps(__m128 x, __m128 y)
-
-	//GLM_FUNC_QUALIFIER __m128 sse_max_ps(__m128 x, __m128 y)
-
-	__m128 sse_clp_ps(__m128 v, __m128 minVal, __m128 maxVal);
-
-	__m128 sse_mix_ps(__m128 v1, __m128 v2, __m128 a);
-
-	__m128 sse_stp_ps(__m128 edge, __m128 x);
-
-	__m128 sse_ssp_ps(__m128 edge0, __m128 edge1, __m128 x);
-
-	__m128 sse_nan_ps(__m128 x);
-
-	__m128 sse_inf_ps(__m128 x);
-
-}//namespace detail
-}//namespace glm
-
-#include "intrinsic_common.inl"
-
-#endif//GLM_ARCH
-#endif//glm_detail_intrinsic_common
+#endif//ILM_TYPE_B128X1_INCLUDED

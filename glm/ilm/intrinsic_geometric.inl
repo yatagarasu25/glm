@@ -27,27 +27,15 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm{
+/*
 namespace ilm // Instruction Level Math
 {
-#if(GLM_ARCH & GLM_ARCH_SSE2)
-	typedef __m128 f32x4;
-	typedef __m128i i32x4;
-	typedef __m128i u32x4;
-	typedef __m128d f64x2;
-
-	typedef __m256 f32x8;
-	typedef __m256i i32x8;
-	typedef __m256i i32x8;
-	typedef __m256d f64x4;
-#elif(GLM_ARCH & GLM_ARCH_NEON)
-
-#else
-	typedef glm::vec4 f32x4;
-#endif
-
 // Type f16, f32, f64, i8, i16, i32, i64, i128, i256, u8, u16, u32, u64, u128, u256, 
 // Register use: s, p
-GLM_FUNC_QUALIFIER f32x4 f32x4_dp_p(f32x4 const & a, f32x4 const & b);
+//f32x4 f32x4p_xp(f32x4 const & a, f32x4 const & b);
+//f32x4 f32x4p_dp(f32x4 const & a, f32x4 const & b);
+//f64x4 f32x4p_dp(f64x4 const & a, f64x4 const & b);
+//f32x8 f32x4p_dp(f32x8 const & a, f32x8 const & b);
 
 /// 4 components vector simd dot product
 GLM_FUNC_QUALIFIER f32x4 f32x4_dp_p(f32x4 const & a, f32x4 const & b)
@@ -75,38 +63,38 @@ GLM_FUNC_QUALIFIER f32x4 f32x4_dp_p(f32x4 const & a, f32x4 const & b)
 }
 
 }//namespace ilm
-
+*/
 namespace detail{
 
 //length
 GLM_FUNC_QUALIFIER __m128 sse_len_ps(__m128 x)
 {
-    __m128 dot0 = sse_dot_ps(x, x);
+	__m128 dot0 = sse_dot_ps(x, x);
 	__m128 sqt0 = _mm_sqrt_ps(dot0);
-    return sqt0;
+	return sqt0;
 }
 
 //distance
 GLM_FUNC_QUALIFIER __m128 sse_dst_ps(__m128 p0, __m128 p1)
 {
 	__m128 sub0 = _mm_sub_ps(p0, p1);
-    __m128 len0 = sse_len_ps(sub0);
-    return len0;
+	__m128 len0 = sse_len_ps(sub0);
+	return len0;
 }
 
 //dot
 GLM_FUNC_QUALIFIER __m128 sse_dot_ps(__m128 v1, __m128 v2)
 {
-#   if(GLM_ARCH & GLM_ARCH_SSE4)
-        return _mm_dp_ps(v1, v2, 0xff);
-#   else
-        __m128 mul0 = _mm_mul_ps(v1, v2);
-        __m128 swp0 = _mm_shuffle_ps(mul0, mul0, _MM_SHUFFLE(2, 3, 0, 1));
-        __m128 add0 = _mm_add_ps(mul0, swp0);
-        __m128 swp1 = _mm_shuffle_ps(add0, add0, _MM_SHUFFLE(0, 1, 2, 3));
-        __m128 add1 = _mm_add_ps(add0, swp1);
-        return add1;
-#   endif
+#	if(GLM_ARCH & GLM_ARCH_SSE4)
+		return _mm_dp_ps(v1, v2, 0xff);
+#	else
+		__m128 mul0 = _mm_mul_ps(v1, v2);
+		__m128 swp0 = _mm_shuffle_ps(mul0, mul0, _MM_SHUFFLE(2, 3, 0, 1));
+		__m128 add0 = _mm_add_ps(mul0, swp0);
+		__m128 swp1 = _mm_shuffle_ps(add0, add0, _MM_SHUFFLE(0, 1, 2, 3));
+		__m128 add1 = _mm_add_ps(add0, swp1);
+		return add1;
+#	endif
 }
 
 // SSE1
