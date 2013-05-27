@@ -39,11 +39,22 @@ http://glm.g-truc.net/glm.pdf
 ================================================================================
 GLM 0.9.5.0: 2013-XX-XX
 --------------------------------------------------------------------------------
+- Added forward declarations (glm/fwd.hpp) for faster compilations
 - Improved Intel Compiler detection
 - Added bitfieldInterleave and _mm_bit_interleave_si128 functions
 - Added GTX_scalar_relational
 - Added GTX_dual_quaternion
 - Added rotation function to GTX_quaternion (#22)
+- Added precision variation of each type
+- Added quaternion comparison functions
+- Fixed GTX_multiple for negative value
+- Removed GTX_ocl_type extension
+- Fixed post increment and decrement operators
+- Fixed perspective with zNear == 0 (#71)
+- Fixed slerp when costheta is close to 1
+- Fixed mat4x2 value_type constructor
+- Fixed glm.natvis for Visual C++ 12 #82
+- Added assert in inversesqrt to detect division by zero. #61
 
 ================================================================================
 GLM 0.9.4.3: 2013-03-20

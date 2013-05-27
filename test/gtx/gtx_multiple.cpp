@@ -10,17 +10,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/multiple.hpp>
 
-int test_higher()
+int test_higher_int()
 {
 	int Error(0);
 
-	int Higher0 = glm::higherMultiple(-5, 4);
-	Error += Higher0 == -4 ? 0 : 1;
+	Error += glm::higherMultiple(-5, 4) == -4 ? 0 : 1;
 	Error += glm::higherMultiple(-4, 4) == -4 ? 0 : 1;
-	Error += glm::higherMultiple(-3, 4) == -4 ? 0 : 1;
-	Error += glm::higherMultiple(-2, 4) == -4 ? 0 : 1;
-	Error += glm::higherMultiple(-1, 4) == -4 ? 0 : 1;
+	Error += glm::higherMultiple(-3, 4) == 0 ? 0 : 1;
+	Error += glm::higherMultiple(-2, 4) == 0 ? 0 : 1;
+	Error += glm::higherMultiple(-1, 4) == 0 ? 0 : 1;
 	Error += glm::higherMultiple(0, 4) == 0 ? 0 : 1;
+	Error += glm::higherMultiple(1, 4) == 4 ? 0 : 1;
+	Error += glm::higherMultiple(2, 4) == 4 ? 0 : 1;
+	Error += glm::higherMultiple(3, 4) == 4 ? 0 : 1;
 	Error += glm::higherMultiple(4, 4) == 4 ? 0 : 1;
 	Error += glm::higherMultiple(5, 4) == 8 ? 0 : 1;
 	Error += glm::higherMultiple(6, 4) == 8 ? 0 : 1;
@@ -31,16 +33,19 @@ int test_higher()
 	return Error;
 }
 
-int test_Lower()
+int test_Lower_int()
 {
 	int Error(0);
 
-	Error += glm::lowerMultiple(-5, 4) == -4 ? 0 : 1;
+	Error += glm::lowerMultiple(-5, 4) == -8 ? 0 : 1;
 	Error += glm::lowerMultiple(-4, 4) == -4 ? 0 : 1;
-	Error += glm::lowerMultiple(-3, 4) == 0 ? 0 : 1;
-	Error += glm::lowerMultiple(-2, 4) == 0 ? 0 : 1;
-	Error += glm::lowerMultiple(-1, 4) == 0 ? 0 : 1;
+	Error += glm::lowerMultiple(-3, 4) == -4 ? 0 : 1;
+	Error += glm::lowerMultiple(-2, 4) == -4 ? 0 : 1;
+	Error += glm::lowerMultiple(-1, 4) == -4 ? 0 : 1;
 	Error += glm::lowerMultiple(0, 4) == 0 ? 0 : 1;
+	Error += glm::lowerMultiple(1, 4) == 0 ? 0 : 1;
+	Error += glm::lowerMultiple(2, 4) == 0 ? 0 : 1;
+	Error += glm::lowerMultiple(3, 4) == 0 ? 0 : 1;
 	Error += glm::lowerMultiple(4, 4) == 4 ? 0 : 1;
 	Error += glm::lowerMultiple(5, 4) == 4 ? 0 : 1;
 	Error += glm::lowerMultiple(6, 4) == 4 ? 0 : 1;
@@ -51,12 +56,61 @@ int test_Lower()
 	return Error;
 }
 
+int test_higher_double()
+{
+	int Error(0);
+
+	Error += glm::higherMultiple(-9.0, 4.0) == -8.0 ? 0 : 1;
+	Error += glm::higherMultiple(-5.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::higherMultiple(-4.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::higherMultiple(-3.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::higherMultiple(-2.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::higherMultiple(-1.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::higherMultiple(0.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::higherMultiple(1.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::higherMultiple(2.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::higherMultiple(3.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::higherMultiple(4.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::higherMultiple(5.0, 4.0) == 8.0 ? 0 : 1;
+	Error += glm::higherMultiple(6.0, 4.0) == 8.0 ? 0 : 1;
+	Error += glm::higherMultiple(7.0, 4.0) == 8.0 ? 0 : 1;
+	Error += glm::higherMultiple(8.0, 4.0) == 8.0 ? 0 : 1;
+	Error += glm::higherMultiple(9.0, 4.0) == 12.0 ? 0 : 1;
+
+	return Error;
+}
+
+int test_Lower_double()
+{
+	int Error(0);
+
+	Error += glm::lowerMultiple(-5.0, 4.0) == -8.0 ? 0 : 1;
+	Error += glm::lowerMultiple(-4.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(-3.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(-2.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(-1.0, 4.0) == -4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(0.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::lowerMultiple(1.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::lowerMultiple(2.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::lowerMultiple(3.0, 4.0) == 0.0 ? 0 : 1;
+	Error += glm::lowerMultiple(4.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(5.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(6.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(7.0, 4.0) == 4.0 ? 0 : 1;
+	Error += glm::lowerMultiple(8.0, 4.0) == 8.0 ? 0 : 1;
+	Error += glm::lowerMultiple(9.0, 4.0) == 8.0 ? 0 : 1;
+
+	return Error;
+}
+
 int main()
 {
 	int Error(0);
 
-	Error += test_higher();
-	Error += test_Lower();
+	Error += test_higher_int();
+	Error += test_Lower_int();
+	Error += test_higher_double();
+	Error += test_Lower_double();
 
 	return Error;
 }

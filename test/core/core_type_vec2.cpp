@@ -169,7 +169,8 @@ int test_vec2_operators()
 	{
 		glm::vec2 A(1.0f, 2.0f);
 		glm::vec2 B = A--;
-		Error += B == glm::vec2(0.0f, 1.0f) ? 0 : 1;
+		Error += B == glm::vec2(1.0f, 2.0f) ? 0 : 1;
+		Error += A == glm::vec2(0.0f, 1.0f) ? 0 : 1;
 	}
 	
 	{
@@ -181,7 +182,8 @@ int test_vec2_operators()
 	{
 		glm::vec2 A(1.0f, 2.0f);
 		glm::vec2 B = A++;
-		Error += B == glm::vec2(2.0f, 3.0f) ? 0 : 1;
+		Error += B == glm::vec2(1.0f, 2.0f) ? 0 : 1;
+		Error += A == glm::vec2(2.0f, 3.0f) ? 0 : 1;
 	}
 	
 	return Error;
@@ -210,11 +212,38 @@ int test_vec2_size()
 	
 	Error += sizeof(glm::vec2) == sizeof(glm::mediump_vec2) ? 0 : 1;
 	Error += 8 == sizeof(glm::mediump_vec2) ? 0 : 1;
-	Error += sizeof(glm::dvec2) == sizeof(glm::highp_vec2) ? 0 : 1;
-	Error += 16 == sizeof(glm::highp_vec2) ? 0 : 1;
+	Error += sizeof(glm::dvec2) == sizeof(glm::highp_dvec2) ? 0 : 1;
+	Error += 16 == sizeof(glm::highp_dvec2) ? 0 : 1;
 	Error += glm::vec2().length() == 2 ? 0 : 1;
 	Error += glm::dvec2().length() == 2 ? 0 : 1;
 	
+	return Error;
+}
+
+int test_operator_increment()
+{
+	int Error(0);
+
+	glm::ivec2 v0(1);
+	glm::ivec2 v1(v0);
+	glm::ivec2 v2(v0);
+	glm::ivec2 v3 = ++v1;
+	glm::ivec2 v4 = v2++;
+
+	Error += glm::all(glm::equal(v0, v4)) ? 0 : 1;
+	Error += glm::all(glm::equal(v1, v2)) ? 0 : 1;
+	Error += glm::all(glm::equal(v1, v3)) ? 0 : 1;
+
+	int i0(1);
+	int i1(i0);
+	int i2(i0);
+	int i3 = ++i1;
+	int i4 = i2++;
+
+	Error += i0 == i4 ? 0 : 1;
+	Error += i1 == i2 ? 0 : 1;
+	Error += i1 == i3 ? 0 : 1;
+
 	return Error;
 }
 
@@ -223,8 +252,9 @@ int main()
 	int Error = 0;
 
 	Error += test_vec2_size();
-    Error += test_vec2_ctor();
+	Error += test_vec2_ctor();
 	Error += test_vec2_operators();
+	Error += test_operator_increment();
 
 	return Error;
 }

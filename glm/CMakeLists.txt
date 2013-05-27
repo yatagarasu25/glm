@@ -1,8 +1,9 @@
-set(NAME glm)
+set(NAME glm_dummy)
 
 file(GLOB ROOT_SOURCE *.cpp)
 file(GLOB ROOT_INLINE *.inl)
 file(GLOB ROOT_HEADER *.hpp)
+file(GLOB ROOT_TEXT ../*.txt)
 
 file(GLOB_RECURSE CORE_SOURCE ./core/*.cpp)
 file(GLOB_RECURSE CORE_INLINE ./core/*.inl)
@@ -24,6 +25,7 @@ file(GLOB_RECURSE VIRTREV_SOURCE ./virtrev/*.cpp)
 file(GLOB_RECURSE VIRTREV_INLINE ./virtrev/*.inl)
 file(GLOB_RECURSE VIRTREV_HEADER ./virtrev/*.hpp)
 
+source_group("Text Files" FILES ${ROOT_TEXT})
 source_group("Core Files" FILES ${CORE_SOURCE})
 source_group("Core Files" FILES ${CORE_INLINE})
 source_group("Core Files" FILES ${CORE_HEADER})
@@ -42,10 +44,13 @@ source_group("VIRTREV Files" FILES ${VIRTREV_HEADER})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-add_executable(${NAME} 
-	${ROOT_SOURCE}    ${ROOT_INLINE}    ${ROOT_HEADER} 
+add_executable(${NAME} ${ROOT_TEXT}
+	${ROOT_SOURCE}    ${ROOT_INLINE}    ${ROOT_HEADER}
 	${CORE_SOURCE}    ${CORE_INLINE}    ${CORE_HEADER}
-	${ILM_SOURCE}     ${ILM_INLINE}     ${ILM_HEADER} 
-	${GTC_SOURCE}     ${GTC_INLINE}     ${GTC_HEADER} 
-	${GTX_SOURCE}     ${GTX_INLINE}     ${GTX_HEADER} 
+	${ILM_SOURCE}     ${ILM_INLINE}     ${ILM_HEADER}
+	${GTC_SOURCE}     ${GTC_INLINE}     ${GTC_HEADER}
+	${GTX_SOURCE}     ${GTX_INLINE}     ${GTX_HEADER}
 	${VIRTREV_SOURCE} ${VIRTREV_INLINE} ${VIRTREV_HEADER})
+
+add_library(glm STATIC glm.cpp)
+add_library(glm_shared SHARED glm.cpp)

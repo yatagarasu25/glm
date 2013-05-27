@@ -7,7 +7,7 @@
 // File    : test/gtx/simd-vec4.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define GLM_SIMD_NO_TYPE_UNION
+#define GLM_SIMD_ENABLE_XYZW_UNION
 #define GLM_FORCE_AVX
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
@@ -24,7 +24,7 @@ void test_sizeof()
     printf("sizeof(glm::simdVec4) == 16 : %s\n", result ? "yes" : "no");
 }
 
-#ifndef GLM_SIMD_NO_TYPE_UNION
+#ifdef GLM_SIMD_ENABLE_XYZW_UNION
 void test_data_equals_xyzw()
 {
     glm::simdVec4 subject(1.0f, 2.0f, 3.0f, 4.0f);
@@ -36,7 +36,7 @@ void test_data_equals_xyzw()
 
     printf("Data == xyzw : %s\n", result ? "yes" : "no");
 }
-#endif
+#endif //GLM_SIMD_ENABLE_XYZW_UNION
 
 void test_accessors()
 {
@@ -117,40 +117,40 @@ void test_div()
 
 void do_correctness_checks()
 {
-    printf("--- Basic Tests ---\n");
-    test_sizeof();
-    test_accessors();
+	printf("--- Basic Tests ---\n");
+	test_sizeof();
+	test_accessors();
 
-#ifndef GLM_SIMD_NO_TYPE_UNION
-    test_data_equals_xyzw();
-#endif
-    
-    printf("\n");
+#ifdef GLM_SIMD_ENABLE_XYZW_UNION
+	test_data_equals_xyzw();
+#endif//GLM_SIMD_ENABLE_XYZW_UNION
+	
+	printf("\n");
 
-    printf("--- Simple Arithmetic Tests ---\n");
-    test_add();
-    test_sub();
-    test_mul();
-    test_div();
+	printf("--- Simple Arithmetic Tests ---\n");
+	test_add();
+	test_sub();
+	test_mul();
+	test_div();
 
-    printf("\n");
+	printf("\n");
 }
 
 void do_consistency_checks()
 {
-    glm::vec4     pure(1.0f, 2.0f, 3.0f, 4.0f);
-    glm::simdVec4 simd(1.0f, 2.0f, 3.0f, 4.0f);
+	glm::vec4     pure(1.0f, 2.0f, 3.0f, 4.0f);
+	glm::simdVec4 simd(1.0f, 2.0f, 3.0f, 4.0f);
 
-    printf("--- Consistency Checks ---\n");
+	printf("--- Consistency Checks ---\n");
 
 
-    printf("    dot : %s\n",
-    (
-        glm::dot(simd, simd) == glm::dot(pure, pure)
+	printf("    dot : %s\n",
+	(
+		glm::dot(simd, simd) == glm::dot(pure, pure)
 
-    ) ? "yes" : "no");
+	) ? "yes" : "no");
 
-    printf("\n");
+	printf("\n");
 }
 
 void do_timing_checks()

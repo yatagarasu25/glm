@@ -182,7 +182,8 @@ int test_vec4_operators()
 	{
 		glm::vec4 A(1.0f, 2.0f, 3.0f, 4.0f);
 		glm::vec4 B = A--;
-		Error += B == glm::vec4(0.0f, 1.0f, 2.0f, 3.0f) ? 0 : 1;
+		Error += B == glm::vec4(1.0f, 2.0f, 3.0f, 4.0f) ? 0 : 1;
+		Error += A == glm::vec4(0.0f, 1.0f, 2.0f, 3.0f) ? 0 : 1;
 	}
 
 	{
@@ -194,7 +195,8 @@ int test_vec4_operators()
 	{
 		glm::vec4 A(1.0f, 2.0f, 3.0f, 4.0f);
 		glm::vec4 B = A++;
-		Error += B == glm::vec4(2.0f, 3.0f, 4.0f, 5.0f) ? 0 : 1;
+		Error += B == glm::vec4(1.0f, 2.0f, 3.0f, 4.0f) ? 0 : 1;
+		Error += A == glm::vec4(2.0f, 3.0f, 4.0f, 5.0f) ? 0 : 1;
 	}
 
 	return Error;
@@ -204,10 +206,14 @@ int test_vec4_size()
 {
 	int Error = 0;
 	
+	Error += sizeof(glm::vec4) == sizeof(glm::lowp_vec4) ? 0 : 1;
 	Error += sizeof(glm::vec4) == sizeof(glm::mediump_vec4) ? 0 : 1;
+	Error += sizeof(glm::vec4) == sizeof(glm::highp_vec4) ? 0 : 1;
 	Error += 16 == sizeof(glm::mediump_vec4) ? 0 : 1;
-	Error += sizeof(glm::dvec4) == sizeof(glm::highp_vec4) ? 0 : 1;
-	Error += 32 == sizeof(glm::highp_vec4) ? 0 : 1;
+	Error += sizeof(glm::dvec4) == sizeof(glm::lowp_dvec4) ? 0 : 1;
+	Error += sizeof(glm::dvec4) == sizeof(glm::mediump_dvec4) ? 0 : 1;
+	Error += sizeof(glm::dvec4) == sizeof(glm::highp_dvec4) ? 0 : 1;
+	Error += 32 == sizeof(glm::highp_dvec4) ? 0 : 1;
 	Error += glm::vec4().length() == 4 ? 0 : 1;
 	Error += glm::dvec4().length() == 4 ? 0 : 1;
 	
@@ -251,17 +257,47 @@ int test_vec4_swizzle_partial()
 	return Error;
 }
 
+int test_operator_increment()
+{
+	int Error(0);
+
+	glm::ivec4 v0(1);
+	glm::ivec4 v1(v0);
+	glm::ivec4 v2(v0);
+	glm::ivec4 v3 = ++v1;
+	glm::ivec4 v4 = v2++;
+
+	Error += glm::all(glm::equal(v0, v4)) ? 0 : 1;
+	Error += glm::all(glm::equal(v1, v2)) ? 0 : 1;
+	Error += glm::all(glm::equal(v1, v3)) ? 0 : 1;
+
+	int i0(1);
+	int i1(i0);
+	int i2(i0);
+	int i3 = ++i1;
+	int i4 = i2++;
+
+	Error += i0 == i4 ? 0 : 1;
+	Error += i1 == i2 ? 0 : 1;
+	Error += i1 == i3 ? 0 : 1;
+
+	return Error;
+}
+
 int main()
 {
 	//__m128 DataA = swizzle<X, Y, Z, W>(glm::vec4(1.0f, 2.0f, 3.0f, 4.0f));
 	//__m128 DataB = swizzle<W, Z, Y, X>(glm::vec4(1.0f, 2.0f, 3.0f, 4.0f));
 
-	int Error = 0;
+	int Error(0);
+	
 	Error += test_vec4_ctor();
 	Error += test_vec4_size();
 	Error += test_vec4_operators();
 	Error += test_hvec4();
-    Error += test_vec4_swizzle_partial();
+	Error += test_vec4_swizzle_partial();
+	Error += test_operator_increment();
+
 	return Error;
 }
 
